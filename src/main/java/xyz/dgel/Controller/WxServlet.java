@@ -1,6 +1,6 @@
 package xyz.dgel.Controller;
 
-import xyz.dgel.MessageHandlerUtil;
+import xyz.dgel.Common.MessageHandlerUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
