@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="userNamespace">
+
+    <!--映射表 property为Entity里的属性名 column为表中的列名 @Column(name = "wx_username")-->
+    <resultMap type="xyz.dgel.Model.EF.UserEntity" id="userMap">
+        <id property="userId" column="user_id"/>
+        <result property="wxId" column="wx_id"/>
+        <result property="wxUsername" column="wx_username"/>
+        <result property="wxImage" column="wx_image"/>
+        <result property="wxStatus" column="wx_status"/>
+        <result property="name" column="name"/>
+        <result property="power" column="power"/>
+        <result property="regTime" column="reg_time"/>
+    </resultMap>
+
+    <!-- 增加用户信息 -->
+    <!--User是表名 跟着括号里的是数据库表中的列名  {}花括号里的是Entity中的属性名-->
+    <insert id="add" parameterType="xyz.dgel.Model.EF.UserEntity">
+        insert into User(user_id,wx_id,wx_username,wx_image,wx_status,name,power,reg_time)
+         values(#{userId},#{wxId},#{wxUsername},#{wxImage},#{wxStatus},#{name},#{power},#{regTime});
+    </insert>
+
+    <select id="getAll" resultMap="userMap">
+        select * from User;
+    </select>
+
+</mapper>
