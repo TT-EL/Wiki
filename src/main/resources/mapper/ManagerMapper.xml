@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="managerNamespace">
+
+    <!--映射表 property为Entity里的属性名 column为表中的列名 @Column(name = "wx_username")-->
+    <resultMap type="xyz.dgel.Model.ViewModel.CourseInfoListView" id="managerMap">
+        <id property="course_id" column="co.course_id"/>
+        <result property="course_name" column="course_name"/>
+        <result property="year" column="course_year"/>
+        <result property="teacher_name" column="name"/>
+        <result property="class_name" column="class_name"/>
+        <result property="course_desc" column="course_desc"/>
+        <result property="student_count" column="student_count"/>
+    </resultMap>
+
+    <select id="getManagerList" resultMap="managerMap">
+        SELECT DISTINCT  co.course_id,course_name,course_year,name,class_name,course_desc,(SELECT COUNT(*) FROM Student WHERE Student.class_id = cl.class_id) as student_count
+        FROM CotoCl ctc
+        INNER JOIN Course co ON ctc.course_id = co.course_id
+        INNER JOIN Class cl ON ctc.class_id = cl.class_id
+        INNER JOIN `User` u ON ctc.teacher_id = u.user_id
+        INNER JOIN CoTime ct ON ctc.cotocl_num = ct.cotocl_num
+    </select>
+
+</mapper>

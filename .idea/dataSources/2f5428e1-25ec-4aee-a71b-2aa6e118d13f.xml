@@ -841,421 +841,425 @@ SELECT|sys.sys_config:null
       <DataType>int(10)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="263" parent="237" name="course_term">
+    <column id="263" parent="237" name="course_year">
       <Position>2</Position>
+      <DataType>varchar(4)|0s</DataType>
+    </column>
+    <column id="264" parent="237" name="course_term">
+      <Position>3</Position>
       <DataType>varchar(20)|0s</DataType>
       <DefaultExpression>&apos;2018&apos;</DefaultExpression>
     </column>
-    <column id="264" parent="237" name="cotocl_num">
-      <Position>3</Position>
+    <column id="265" parent="237" name="cotocl_num">
+      <Position>4</Position>
       <DataType>int(10)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="265" parent="237" name="course_week">
-      <Position>4</Position>
+    <column id="266" parent="237" name="course_week">
+      <Position>5</Position>
       <DataType>varchar(20)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="266" parent="237" name="course_week_time">
-      <Position>5</Position>
+    <column id="267" parent="237" name="course_week_time">
+      <Position>6</Position>
       <DataType>varchar(4)|0s</DataType>
     </column>
-    <column id="267" parent="237" name="course_date">
-      <Position>6</Position>
+    <column id="268" parent="237" name="course_date">
+      <Position>7</Position>
       <DataType>timestamp(6)|0s</DataType>
       <NotNull>1</NotNull>
       <DefaultExpression>CURRENT_TIMESTAMP(6)</DefaultExpression>
       <OnUpdate>CURRENT_TIMESTAMP(6)</OnUpdate>
     </column>
-    <index id="268" parent="237" name="cotime_cotocl_num">
+    <index id="269" parent="237" name="cotime_cotocl_num">
       <ColNames>cotocl_num</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="269" parent="237" name="PRIMARY">
+    <key id="270" parent="237" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>info_id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="270" parent="237" name="cotime_cotocl_num">
+    <foreign-key id="271" parent="237" name="cotime_cotocl_num">
       <ColNames>cotocl_num</ColNames>
       <RefTableName>CotoCl</RefTableName>
       <RefColNames>cotocl_num</RefColNames>
     </foreign-key>
-    <column id="271" parent="238" name="cotocl_num">
+    <column id="272" parent="238" name="cotocl_num">
       <Position>1</Position>
       <DataType>int(10)|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>null</SequenceIdentity>
     </column>
-    <column id="272" parent="238" name="class_id">
+    <column id="273" parent="238" name="class_id">
       <Position>2</Position>
       <DataType>varchar(20)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="273" parent="238" name="course_id">
+    <column id="274" parent="238" name="course_id">
       <Position>3</Position>
       <DataType>varchar(4)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="274" parent="238" name="teacher_id">
+    <column id="275" parent="238" name="teacher_id">
       <Position>4</Position>
       <Comment>老师工号</Comment>
       <DataType>varchar(20)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <index id="275" parent="238" name="ctoc_class_id">
+    <index id="276" parent="238" name="ctoc_class_id">
       <ColNames>class_id</ColNames>
       <Type>btree</Type>
     </index>
-    <index id="276" parent="238" name="ctoc_course_id">
+    <index id="277" parent="238" name="ctoc_course_id">
       <ColNames>course_id</ColNames>
       <Type>btree</Type>
     </index>
-    <index id="277" parent="238" name="ctoc_teacher">
+    <index id="278" parent="238" name="ctoc_teacher">
       <ColNames>teacher_id</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="278" parent="238" name="PRIMARY">
+    <key id="279" parent="238" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>cotocl_num</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="279" parent="238" name="ctoc_class_id">
+    <foreign-key id="280" parent="238" name="ctoc_class_id">
       <ColNames>class_id</ColNames>
       <RefTableName>Class</RefTableName>
       <RefColNames>class_id</RefColNames>
     </foreign-key>
-    <foreign-key id="280" parent="238" name="ctoc_course_id">
+    <foreign-key id="281" parent="238" name="ctoc_course_id">
       <ColNames>course_id</ColNames>
       <RefTableName>Course</RefTableName>
       <RefColNames>course_id</RefColNames>
     </foreign-key>
-    <foreign-key id="281" parent="238" name="ctoc_teacher">
+    <foreign-key id="282" parent="238" name="ctoc_teacher">
       <ColNames>teacher_id</ColNames>
       <RefTableName>Teacher</RefTableName>
       <RefColNames>teacher_id</RefColNames>
     </foreign-key>
-    <column id="282" parent="239" name="course_id">
+    <column id="283" parent="239" name="course_id">
       <Position>1</Position>
       <DataType>varchar(4)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="283" parent="239" name="course_name">
+    <column id="284" parent="239" name="course_name">
       <Position>2</Position>
       <DataType>varchar(50)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="284" parent="239" name="course_desc">
+    <column id="285" parent="239" name="course_desc">
       <Position>3</Position>
       <Comment>课程描述</Comment>
       <DataType>varchar(255)|0s</DataType>
     </column>
-    <column id="285" parent="239" name="course_image">
+    <column id="286" parent="239" name="course_image">
       <Position>4</Position>
       <DataType>varchar(4096)|0s</DataType>
     </column>
-    <key id="286" parent="239" name="PRIMARY">
+    <key id="287" parent="239" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>course_id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="287" parent="240" name="i_id">
+    <column id="288" parent="240" name="i_id">
       <Position>1</Position>
       <DataType>varchar(20)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="288" parent="240" name="collection_time">
+    <column id="289" parent="240" name="collection_time">
       <Position>2</Position>
       <DataType>timestamp(6)|0s</DataType>
       <NotNull>1</NotNull>
       <DefaultExpression>CURRENT_TIMESTAMP(6)</DefaultExpression>
       <OnUpdate>CURRENT_TIMESTAMP(6)</OnUpdate>
     </column>
-    <key id="289" parent="240" name="PRIMARY">
+    <key id="290" parent="240" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>i_id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="290" parent="241" name="i_id">
+    <column id="291" parent="241" name="i_id">
       <Position>1</Position>
       <DataType>varchar(20)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="291" parent="241" name="remark_text">
+    <column id="292" parent="241" name="remark_text">
       <Position>2</Position>
       <DataType>text|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="292" parent="241" name="remark_time">
+    <column id="293" parent="241" name="remark_time">
       <Position>3</Position>
       <DataType>timestamp(6)|0s</DataType>
       <NotNull>1</NotNull>
       <DefaultExpression>CURRENT_TIMESTAMP(6)</DefaultExpression>
       <OnUpdate>CURRENT_TIMESTAMP(6)</OnUpdate>
     </column>
-    <key id="293" parent="241" name="PRIMARY">
+    <key id="294" parent="241" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>i_id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="294" parent="242" name="i_id">
+    <column id="295" parent="242" name="i_id">
       <Position>1</Position>
       <DataType>varchar(20)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="295" parent="242" name="target_user_id">
+    <column id="296" parent="242" name="target_user_id">
       <Position>2</Position>
       <DataType>varchar(20)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <key id="296" parent="242" name="PRIMARY">
+    <key id="297" parent="242" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>i_id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="297" parent="243" name="i_id">
+    <column id="298" parent="243" name="i_id">
       <Position>1</Position>
       <DataType>varchar(20)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="298" parent="243" name="value">
+    <column id="299" parent="243" name="value">
       <Position>2</Position>
       <DataType>int(4)|0s</DataType>
       <NotNull>1</NotNull>
       <DefaultExpression>0</DefaultExpression>
     </column>
-    <key id="299" parent="243" name="PRIMARY">
+    <key id="300" parent="243" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>i_id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="300" parent="244" name="i_id">
+    <column id="301" parent="244" name="i_id">
       <Position>1</Position>
       <DataType>varchar(20)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="301" parent="244" name="i_classify">
+    <column id="302" parent="244" name="i_classify">
       <Position>2</Position>
       <DataType>int(4)|0s</DataType>
       <DefaultExpression>0</DefaultExpression>
     </column>
-    <column id="302" parent="244" name="t_id">
+    <column id="303" parent="244" name="t_id">
       <Position>3</Position>
       <DataType>varchar(20)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="303" parent="244" name="user_id">
+    <column id="304" parent="244" name="user_id">
       <Position>4</Position>
       <DataType>varchar(20)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="304" parent="244" name="i_time">
+    <column id="305" parent="244" name="i_time">
       <Position>5</Position>
       <DataType>timestamp(6)|0s</DataType>
       <NotNull>1</NotNull>
       <DefaultExpression>CURRENT_TIMESTAMP(6)</DefaultExpression>
       <OnUpdate>CURRENT_TIMESTAMP(6)</OnUpdate>
     </column>
-    <index id="305" parent="244" name="i_t_id">
+    <index id="306" parent="244" name="i_t_id">
       <ColNames>t_id</ColNames>
       <Type>btree</Type>
     </index>
-    <index id="306" parent="244" name="i_user_id">
+    <index id="307" parent="244" name="i_user_id">
       <ColNames>user_id</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="307" parent="244" name="PRIMARY">
+    <key id="308" parent="244" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>i_id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="308" parent="244" name="i_t_id">
+    <foreign-key id="309" parent="244" name="i_t_id">
       <ColNames>t_id</ColNames>
       <RefTableName>Tie</RefTableName>
       <RefColNames>t_id</RefColNames>
     </foreign-key>
-    <foreign-key id="309" parent="244" name="i_user_id">
+    <foreign-key id="310" parent="244" name="i_user_id">
       <ColNames>user_id</ColNames>
       <RefTableName>User</RefTableName>
       <RefColNames>user_id</RefColNames>
     </foreign-key>
-    <column id="310" parent="245" name="student_id">
+    <column id="311" parent="245" name="student_id">
       <Position>1</Position>
       <DataType>varchar(20)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="311" parent="245" name="class_id">
+    <column id="312" parent="245" name="class_id">
       <Position>2</Position>
       <DataType>varchar(20)|0s</DataType>
     </column>
-    <column id="312" parent="245" name="enrol_time">
+    <column id="313" parent="245" name="enrol_time">
       <Position>3</Position>
       <DataType>timestamp(6)|0s</DataType>
       <NotNull>1</NotNull>
       <DefaultExpression>CURRENT_TIMESTAMP(6)</DefaultExpression>
     </column>
-    <index id="313" parent="245" name="student_class_id">
+    <index id="314" parent="245" name="student_class_id">
       <ColNames>class_id</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="314" parent="245" name="PRIMARY">
+    <key id="315" parent="245" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>student_id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="315" parent="245" name="student_user_id">
+    <foreign-key id="316" parent="245" name="student_user_id">
       <ColNames>student_id</ColNames>
       <RefTableName>User</RefTableName>
       <RefColNames>user_id</RefColNames>
       <OnDelete>cascade</OnDelete>
     </foreign-key>
-    <foreign-key id="316" parent="245" name="student_class_id">
+    <foreign-key id="317" parent="245" name="student_class_id">
       <ColNames>class_id</ColNames>
       <RefTableName>Class</RefTableName>
       <RefColNames>class_id</RefColNames>
       <OnDelete>cascade</OnDelete>
     </foreign-key>
-    <column id="317" parent="246" name="teacher_id">
+    <column id="318" parent="246" name="teacher_id">
       <Position>1</Position>
       <DataType>varchar(20)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="318" parent="246" name="department_id">
+    <column id="319" parent="246" name="department_id">
       <Position>2</Position>
       <DataType>int(4)|0s</DataType>
     </column>
-    <column id="319" parent="246" name="department_name">
+    <column id="320" parent="246" name="department_name">
       <Position>3</Position>
       <DataType>varchar(20)|0s</DataType>
     </column>
-    <key id="320" parent="246" name="PRIMARY">
+    <key id="321" parent="246" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>teacher_id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="321" parent="246" name="teacher_user_id">
+    <foreign-key id="322" parent="246" name="teacher_user_id">
       <ColNames>teacher_id</ColNames>
       <RefTableName>User</RefTableName>
       <RefColNames>user_id</RefColNames>
       <OnDelete>cascade</OnDelete>
     </foreign-key>
-    <column id="322" parent="247" name="t_id">
+    <column id="323" parent="247" name="t_id">
       <Position>1</Position>
       <DataType>varchar(20)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="323" parent="247" name="course_id">
+    <column id="324" parent="247" name="course_id">
       <Position>2</Position>
       <DataType>varchar(4)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="324" parent="247" name="user_id">
+    <column id="325" parent="247" name="user_id">
       <Position>3</Position>
       <DataType>varchar(20)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="325" parent="247" name="t_url_video">
+    <column id="326" parent="247" name="t_url_video">
       <Position>4</Position>
       <DataType>varchar(4096)|0s</DataType>
     </column>
-    <column id="326" parent="247" name="t_url_image">
+    <column id="327" parent="247" name="t_url_image">
       <Position>5</Position>
       <DataType>text|0s</DataType>
     </column>
-    <column id="327" parent="247" name="t_introduction">
+    <column id="328" parent="247" name="t_introduction">
       <Position>6</Position>
       <DataType>varchar(255)|0s</DataType>
     </column>
-    <column id="328" parent="247" name="t_text">
+    <column id="329" parent="247" name="t_text">
       <Position>7</Position>
       <Comment>文本内容</Comment>
       <DataType>text|0s</DataType>
     </column>
-    <column id="329" parent="247" name="t_watch">
+    <column id="330" parent="247" name="t_watch">
       <Position>8</Position>
       <DataType>int(11)|0s</DataType>
       <DefaultExpression>0</DefaultExpression>
     </column>
-    <column id="330" parent="247" name="t_edit_time">
+    <column id="331" parent="247" name="t_edit_time">
       <Position>9</Position>
       <DataType>timestamp(6)|0s</DataType>
       <NotNull>1</NotNull>
       <DefaultExpression>CURRENT_TIMESTAMP(6)</DefaultExpression>
       <OnUpdate>CURRENT_TIMESTAMP(6)</OnUpdate>
     </column>
-    <index id="331" parent="247" name="t_course_id">
+    <index id="332" parent="247" name="t_course_id">
       <ColNames>course_id</ColNames>
       <Type>btree</Type>
     </index>
-    <index id="332" parent="247" name="t_user_id">
+    <index id="333" parent="247" name="t_user_id">
       <ColNames>user_id</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="333" parent="247" name="PRIMARY">
+    <key id="334" parent="247" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>t_id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="334" parent="247" name="t_user_id">
+    <foreign-key id="335" parent="247" name="t_user_id">
       <ColNames>user_id</ColNames>
       <RefTableName>User</RefTableName>
       <RefColNames>user_id</RefColNames>
     </foreign-key>
-    <column id="335" parent="248" name="user_id">
+    <column id="336" parent="248" name="user_id">
       <Position>1</Position>
       <DataType>varchar(20)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="336" parent="248" name="wx_id">
+    <column id="337" parent="248" name="wx_id">
       <Position>2</Position>
       <DataType>varchar(20)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="337" parent="248" name="wx_username">
+    <column id="338" parent="248" name="wx_username">
       <Position>3</Position>
       <DataType>varchar(20)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="338" parent="248" name="wx_image">
+    <column id="339" parent="248" name="wx_image">
       <Position>4</Position>
       <DataType>varchar(4096)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="339" parent="248" name="wx_status">
+    <column id="340" parent="248" name="wx_status">
       <Position>5</Position>
       <DataType>tinyint(1)|0s</DataType>
       <DefaultExpression>0</DefaultExpression>
     </column>
-    <column id="340" parent="248" name="name">
+    <column id="341" parent="248" name="name">
       <Position>6</Position>
       <DataType>varchar(20)|0s</DataType>
     </column>
-    <column id="341" parent="248" name="power">
+    <column id="342" parent="248" name="power">
       <Position>7</Position>
       <DataType>tinyint(1)|0s</DataType>
     </column>
-    <column id="342" parent="248" name="reg_time">
+    <column id="343" parent="248" name="reg_time">
       <Position>8</Position>
       <DataType>timestamp(6)|0s</DataType>
       <NotNull>1</NotNull>
       <DefaultExpression>CURRENT_TIMESTAMP(6)</DefaultExpression>
       <OnUpdate>CURRENT_TIMESTAMP(6)</OnUpdate>
     </column>
-    <key id="343" parent="248" name="PRIMARY">
+    <key id="344" parent="248" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>user_id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="344" parent="249" name="eid">
+    <column id="345" parent="249" name="eid">
       <Position>1</Position>
       <DataType>char(255)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="345" parent="249" name="ename">
+    <column id="346" parent="249" name="ename">
       <Position>2</Position>
       <DataType>varchar(255)|0s</DataType>
     </column>
-    <key id="346" parent="249" name="PRIMARY">
+    <key id="347" parent="249" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>eid</ColNames>
       <Primary>1</Primary>

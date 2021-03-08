@@ -25,6 +25,6 @@ public class UserDao {
     }
     public List<UserEntity> getAll() throws Exception{
         SqlSession sqlSession = sqlSessionFactory.openSession();
-        return sqlSession.selectList("empNamespace.getAll");
+        return sqlSession.selectList("userNamespace.getAll");
     }
 }
