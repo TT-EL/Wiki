@@ -9,6 +9,7 @@ public class CoTimeEntity {
     private int infoId;
     private String courseTerm;
     private int cotoclNum;
+    private String courseYear;
     private String courseWeek;
     private String courseWeekTime;
     private Timestamp courseDate;
@@ -21,6 +22,16 @@ public class CoTimeEntity {
 
     public void setInfoId(int infoId) {
         this.infoId = infoId;
+    }
+
+    @Basic
+    @Column(name = "course_year")
+    public String getCourseYear() {
+        return courseTerm;
+    }
+
+    public void setCourseYear(String courseTerm) {
+        this.courseTerm = courseTerm;
     }
 
     @Basic
