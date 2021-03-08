@@ -24,4 +24,7 @@
         INNER JOIN CoTime ct ON ctc.cotocl_num = ct.cotocl_num
     </select>
 
+    <insert id="addCourseInfo">
+
+    </insert>
 </mapper>
