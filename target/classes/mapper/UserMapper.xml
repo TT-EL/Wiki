@@ -15,16 +15,44 @@
         <result property="power" column="power"/>
         <result property="regTime" column="reg_time"/>
     </resultMap>
+    <select id="getAllUser" resultMap="userMap">
+        select * from User;
+    </select>
 
     <!-- 增加用户信息 -->
     <!--User是表名 跟着括号里的是数据库表中的列名  {}花括号里的是Entity中的属性名-->
-    <insert id="add" parameterType="xyz.dgel.Model.EF.UserEntity">
+    <insert id="addUser" parameterType="xyz.dgel.Model.EF.UserEntity">
         insert into User(user_id,wx_id,wx_username,wx_image,wx_status,name,power,reg_time)
          values(#{userId},#{wxId},#{wxUsername},#{wxImage},#{wxStatus},#{name},#{power},#{regTime});
     </insert>
 
-    <select id="getAll" resultMap="userMap">
-        select * from User;
+    <insert id="addStudent" parameterType="xyz.dgel.Model.EF.StudentEntity">
+        insert into Student(student_id,class_id,enrol_time)
+        values(#{studentId},#{classId},#{enrolTime})
+    </insert>
+
+
+    <resultMap id="getRegisterWxInfo" type="String">
+        <result property="user_id" column="user_id"/>
+    </resultMap>
+    <select id="getRegisterWxInfo" parameterType="String">
+        select user_id from User where wx_id = #{0}
     </select>
+
+
+    <resultMap id="getStudentCourseList" type="xyz.dgel.Model.ViewModel.UserGetCourseListView">
+        <result property="courseName" column="course_name"/>
+        <result property="cotoclNum" column="cotocl_num"/>
+        <result property="courseImage" column="course_image"/>
+    </resultMap>
+    <select id="getStudentCourseList" parameterType="String" resultMap="getStudentCourseList">
+        SELECT course_name,cotocl_num,course_image
+        FROM CotoCl ctc
+                 INNER JOIN Course co ON ctc.course_id = co.course_id
+                 INNER JOIN Class cl ON ctc.class_id = cl.class_id
+        WHERE cl.class_id IN (SELECT Student.class_id FROM Student WHERE student_id = #{student_id})
+
+    </select>
+
 
 </mapper>

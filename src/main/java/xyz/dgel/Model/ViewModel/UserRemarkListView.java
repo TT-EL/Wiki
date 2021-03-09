@@ -1,15 +1,25 @@
-package xyz.dgel.Model.EF;
+package xyz.dgel.Model.ViewModel;
 
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Id;
 import java.sql.Timestamp;
 
-@Entity
-@Table(name = "InterRemark", schema = "WikiDatebase")
-public class InterRemarkEntity {
+public class UserRemarkListView {
+
     private String iId;
+
+    private String userName;
+
+    private String wxImage;
+
     private String remarkText;
+
     private Timestamp remarkTime;
+
     public Integer remarkUpNum;
+
+
 
     @Id
     @Column(name = "i_id")
@@ -19,6 +29,26 @@ public class InterRemarkEntity {
 
     public void setiId(String iId) {
         this.iId = iId;
+    }
+
+    @Basic
+    @Column(name = "name")
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    @Basic
+    @Column(name = "wx_image")
+    public String getWxImage() {
+        return wxImage;
+    }
+
+    public void setWxImage(String wxImage) {
+        this.wxImage = wxImage;
     }
 
     @Basic

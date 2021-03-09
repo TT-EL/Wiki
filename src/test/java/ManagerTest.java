@@ -3,7 +3,8 @@ import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import xyz.dgel.DAL.ManagerDao;
-import xyz.dgel.Model.ViewModel.CourseInfoListView;
+import xyz.dgel.Model.EF.CotoClEntity;
+import xyz.dgel.Model.ViewModel.ManagerHomepageCourseInfoListView;
 
 import java.util.List;
 
@@ -20,10 +21,30 @@ public class ManagerTest {
         init();
 
         ManagerDao managerDao = (ManagerDao)applicationContext.getBean("managerDao");
-        List<CourseInfoListView> listViews = managerDao.getManageHomePageCourseInfo();
+        List<ManagerHomepageCourseInfoListView> listViews = managerDao.getManageHomePageCourseInfo();
         String s = JSON.toJSONString(listViews);
         System.out.println(s);
 
 
+    }
+
+    @Test
+    public void insert() throws Exception{
+        CotoClEntity cotoClEntity = new CotoClEntity();
+        cotoClEntity.setClassId("1111");
+        cotoClEntity.setCourseId("2222");
+        cotoClEntity.setTeacherId("3333");
+
+        init();
+        ManagerDao managerDao = (ManagerDao)applicationContext.getBean("managerDao");
+        managerDao.addcourseinfo(cotoClEntity);
+    }
+
+    @Test
+    public void getClassIdByName() throws Exception{
+
+        init();
+        ManagerDao managerDao = (ManagerDao)applicationContext.getBean("managerDao");
+        System.out.println(managerDao.getclassid("软件一班"));
     }
 }

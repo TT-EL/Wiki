@@ -1,20 +1,20 @@
-package xyz.dgel.Model.EF;
+package xyz.dgel.Model.ViewModel;
 
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Id;
 import java.sql.Timestamp;
 
-@Entity
-@Table(name = "Tie", schema = "WikiDatebase")
-public class TieEntity {
+public class UserGetTieListView {
+
     private String tId;
-    private int cotoclNum;
-    private String userId;
     private String tUrlVideo;
     private String tUrlImage;
     private String tIntroduction;
-    private String tText;
     private Integer tWatch;
     private Timestamp tEditTime;
+    private String wxImage;
+    private String name;
 
     @Id
     @Column(name = "t_id")
@@ -26,25 +26,6 @@ public class TieEntity {
         this.tId = tId;
     }
 
-    @Basic
-    @Column(name = "cotocl_num")
-    public int getCourseId() {
-        return cotoclNum;
-    }
-
-    public void setCourseId(int cotoclNum) {
-        this.cotoclNum = cotoclNum;
-    }
-
-    @Basic
-    @Column(name = "user_id")
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
 
     @Basic
     @Column(name = "t_url_video")
@@ -76,15 +57,6 @@ public class TieEntity {
         this.tIntroduction = tIntroduction;
     }
 
-    @Basic
-    @Column(name = "t_text")
-    public String gettText() {
-        return tText;
-    }
-
-    public void settText(String tText) {
-        this.tText = tText;
-    }
 
     @Basic
     @Column(name = "t_watch")
@@ -104,6 +76,26 @@ public class TieEntity {
 
     public void settEditTime(Timestamp tEditTime) {
         this.tEditTime = tEditTime;
+    }
+
+    @Basic
+    @Column(name = "wx_image")
+    public String getWxImage() {
+        return wxImage;
+    }
+
+    public void setWxImage(String wxImage) {
+        this.wxImage = wxImage;
+    }
+
+    @Basic
+    @Column(name = "name")
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
 }

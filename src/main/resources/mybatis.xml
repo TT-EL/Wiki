@@ -5,6 +5,11 @@
 
 <configuration>
 
+    <!--简化包名-->
+    <typeAliases>
+        <typeAlias type="java.lang.String" alias="String"/>
+        <typeAlias type="java.lang.Integer" alias="Integer"/>
+    </typeAliases>
     <mappers>
 
         <!--一会儿会在这里导入Mapper文件-->

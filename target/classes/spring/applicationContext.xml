@@ -25,6 +25,7 @@
         <property name="jdbcUrl" value="${database.url}"/>
         <property name="user" value="${database.username}"/>
         <property name="password" value="${database.password}"/>
+
     </bean>
 
 
@@ -79,10 +80,28 @@
     <!--开启以注解的方式来管理事务-->
     <tx:annotation-driven transaction-manager="dataSourceTransactionManagerID"/>
 
+    <!---->
+<!--    <mvc:annotation-driven />-->
+
     <!--扫描注解-->
     <context:component-scan base-package="xyz.dgel">
         <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />
     </context:component-scan>
+
+    <!--配置以自动注入Controller层下的Service-->
+    <context:component-scan base-package="xyz.dgel">
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service" />
+    </context:component-scan>
+
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/jsp" />
+        <property name="suffix" value=".jsp" />
+    </bean>
+
+
+
+
 
 
 </beans>

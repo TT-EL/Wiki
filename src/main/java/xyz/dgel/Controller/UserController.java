@@ -23,4 +23,12 @@ public class UserController {
         model.addAttribute("message","注册成功");
         return "/WEB-INF/jsp/message.jsp";
     }
+
+    @RequestMapping("/getalluser")
+    public void getAllUser() throws Exception{
+
+
+        String s = userService.getAlluser().toString();
+        System.out.println(s);
+    }
 }

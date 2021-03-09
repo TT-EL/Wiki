@@ -11,7 +11,7 @@
     <title>员工注册</title>
 </head>
 <body>
-<form action="${pageContext.request.contextPath}/Employee/register" method="POST">
+<form action="${pageContext.request.contextPath}/User/register" method="POST">
     <table border="2" align="center">
         <tr>
             <th>编号</th>

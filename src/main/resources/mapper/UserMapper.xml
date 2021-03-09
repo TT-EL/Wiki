@@ -15,16 +15,121 @@
         <result property="power" column="power"/>
         <result property="regTime" column="reg_time"/>
     </resultMap>
+    <select id="getAllUser" resultMap="userMap">
+        select * from User;
+    </select>
 
     <!-- 增加用户信息 -->
     <!--User是表名 跟着括号里的是数据库表中的列名  {}花括号里的是Entity中的属性名-->
-    <insert id="add" parameterType="xyz.dgel.Model.EF.UserEntity">
+    <insert id="addUser" parameterType="xyz.dgel.Model.EF.UserEntity">
         insert into User(user_id,wx_id,wx_username,wx_image,wx_status,name,power,reg_time)
          values(#{userId},#{wxId},#{wxUsername},#{wxImage},#{wxStatus},#{name},#{power},#{regTime});
     </insert>
 
-    <select id="getAll" resultMap="userMap">
-        select * from User;
+    <insert id="addStudent" parameterType="xyz.dgel.Model.EF.StudentEntity">
+        insert into Student(student_id,class_id,enrol_time)
+        values(#{studentId},#{classId},#{enrolTime})
+    </insert>
+
+
+    <resultMap id="getRegisterWxInfo" type="String">
+        <result property="user_id" column="user_id"/>
+    </resultMap>
+    <select id="getRegisterWxInfo" parameterType="String">
+        select user_id from User where wx_id = #{0}
     </select>
+
+
+    <!--通过student_id获取属于该学生的课程列表-->
+    <resultMap id="getStudentCourseList" type="xyz.dgel.Model.ViewModel.UserGetCourseListView">
+        <result property="courseName" column="course_name"/>
+        <result property="cotoclNum" column="cotocl_num"/>
+        <result property="courseImage" column="course_image"/>
+    </resultMap>
+    <select id="getStudentCourseList" parameterType="String" resultMap="getStudentCourseList">
+        SELECT course_name,cotocl_num,course_image
+        FROM CotoCl ctc
+                 INNER JOIN Course co ON ctc.course_id = co.course_id
+                 INNER JOIN Class cl ON ctc.class_id = cl.class_id
+        WHERE cl.class_id IN (SELECT Student.class_id FROM Student WHERE student_id = #{student_id})
+
+    </select>
+
+
+    <!--通过cotocl_id获取属于该课程的帖子列表-->
+    <resultMap id="getTieList" type="xyz.dgel.Model.ViewModel.UserGetTieListView">
+        <id property="tId" column="t_id"/>
+        <result property="tUrlVideo" column="t_url_video"/>
+        <result property="tUrlImage" column="t_url_image"/>
+        <result property="tIntroduction" column="t_introduction"/>
+        <result property="tWatch" column="t_watch"/>
+        <result property="tEditTime" column="t_edit_time"/>
+        <result property="wxImage" column="wx_image"/>
+        <result property="name" column="name"/>
+    </resultMap>
+    <select id="getTieList" parameterType="Integer" resultMap="getTieList">
+        SELECT t_id,name,wx_image,t_introduction,t_url_image,t_url_video,t_watch,t_edit_time
+        FROM Tie t
+                 INNER JOIN `User` u ON t.user_id = u.user_id
+        WHERE cotocl_num = #{cotocl_num}
+    </select>
+
+    <!--用户发帖提问-->
+    <insert id="addTieInfo" parameterType="xyz.dgel.Model.EF.TieEntity">
+        insert into Tie(t_id, cotocl_num, user_id, t_url_video, t_url_image, t_introduction, t_text,t_watch,t_edit_time)
+        values(#{tId},#{cotoclNum},#{userId},#{tUrlVideo},#{tUrlImage},#{tIntroduction},#{tText},#{tWatch},#{tEditTime})
+    </insert>
+
+
+    <!--通过t_id获取帖子的回复列表-->
+    <resultMap id="getRemarkList" type="xyz.dgel.Model.ViewModel.UserRemarkListView">
+        <id property="iId" column="i_id"/>
+        <result property="userName" column="name"/>
+        <result property="wxImage" column="wx_image"/>
+        <result property="remarkText" column="remark_text"/>
+        <result property="remarkTime" column="remark_time"/>
+        <result property="remarkUpNum" column="remark_up_num"/>
+    </resultMap>
+    <select id="getRemarkList" parameterType="String" resultMap="getRemarkList">
+        SELECT i.i_id AS i_id,name,wx_image,remark_text,remark_time,remark_up_num
+        FROM Interaction i
+                 INNER JOIN InterRemark ir ON i.i_id = ir.i_id
+                 INNER JOIN User u ON u.user_id = i.user_id
+        WHERE i.i_classify=2 AND t_id = #{t_id}
+        ORDER BY remark_time DESC
+    </select>
+
+
+    <!--插入互动表创建互动-->
+    <insert id="addInteractionBase" parameterType="xyz.dgel.Model.EF.InteractionEntity">
+        insert into Interaction(i_id, i_classify, t_id, user_id, i_time)
+        VALUES (#{iId},#{iClassify},#{tId},#{userId},#{iTime})
+    </insert>
+
+    <!--评论-->
+    <insert id="addInterRemark" parameterType="xyz.dgel.Model.EF.InterRemarkEntity">
+        insert into InterRemark(i_id, remark_text, remark_time, remark_up_num)
+        VALUES (#{iId},#{remarkText},#{remarkTime},#{remarkUpNum})
+    </insert>
+
+    <!--点赞-->
+    <insert id="addInterUp" parameterType="xyz.dgel.Model.EF.InterUpEntity">
+        insert into InterUp(i_id, value)
+        VALUES (#{iId},#{value})
+    </insert>
+
+    <!--转发-->
+    <insert id="addInterTransout" parameterType="xyz.dgel.Model.EF.InterTransoutEntity">
+        insert into InterTransout(i_id, target_user_id)
+        VALUES (#{iId},#{targetUserId})
+    </insert>
+
+    <!--收藏-->
+    <insert id="addInterCollection" parameterType="xyz.dgel.Model.EF.InterCollectionEntity">
+        insert into InterCollection(i_id, collection_time)
+        VALUES (#{iId},#{collectionTime})
+    </insert>
+
+
 
 </mapper>
