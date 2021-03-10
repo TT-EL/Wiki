@@ -5,6 +5,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import xyz.dgel.DAL.ManagerDao;
 import xyz.dgel.DAL.UserDao;
+import xyz.dgel.Model.EF.StudentEntity;
 import xyz.dgel.Model.EF.UserEntity;
 import xyz.dgel.Model.ViewModel.ManagerHomepageCourseInfoListView;
 import xyz.dgel.Model.ViewModel.UserGetCourseListView;
@@ -24,19 +25,24 @@ public class UserTest {
 
     @Test
     public void adduser() throws Exception{
-        UserEntity userEntity = new UserEntity();
-        userEntity.setUserId("12345df");
+        StudentEntity userEntity = new StudentEntity();
+        userEntity.setUserId("12345df4567");
         userEntity.setWxId("12dfdg2g");
-        userEntity.setWxUsername("Tom");
+        userEntity.setWxUsername("中文");
         userEntity.setWxStatus((byte)1);
         userEntity.setWxImage("https://ssss");
-        userEntity.setPower((byte)1);
-        userEntity.setWxUsername("slfklsfk");
+        userEntity.setPower((byte)0);
+        userEntity.setName("中文");
         userEntity.setRegTime(null);
+
+        userEntity.setStudentId("12345df4567");
+        userEntity.setClassId("1111");
+        userEntity.setEnrolTime(2018);
 
         init();
         UserDao userDao = (UserDao)applicationContext.getBean("userDao");
         userDao.addUser(userEntity);
+        userDao.addStudent(userEntity);
     }
 
     @Test

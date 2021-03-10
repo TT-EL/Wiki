@@ -37,7 +37,7 @@ public class ManagerTest {
 
         init();
         ManagerDao managerDao = (ManagerDao)applicationContext.getBean("managerDao");
-        managerDao.addcourseinfo(cotoClEntity);
+        managerDao.addCoursePlanInfo(cotoClEntity);
     }
 
     @Test
@@ -45,6 +45,6 @@ public class ManagerTest {
 
         init();
         ManagerDao managerDao = (ManagerDao)applicationContext.getBean("managerDao");
-        System.out.println(managerDao.getclassid("软件一班"));
+        System.out.println(managerDao.getClassId("软件一班"));
     }
 }

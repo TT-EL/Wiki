@@ -17,17 +17,35 @@ public class UserDao {
     @Autowired
     private SqlSessionFactory sqlSessionFactory;
 
-    public int addUser(UserEntity userEntity) throws Exception
+    public boolean addUser(UserEntity userEntity) throws Exception
     {
         SqlSession sqlSession = sqlSessionFactory.openSession();
         int result = sqlSession.insert("userNamespace.addUser",userEntity);
         sqlSession.commit();
         sqlSession.close();
-        return result;
+        return result==1;
     }
-    public List<UserEntity> getAllUser() throws Exception{
+    public boolean addStudent(StudentEntity studentEntity) throws Exception
+    {
         SqlSession sqlSession = sqlSessionFactory.openSession();
-        return sqlSession.selectList("userNamespace.getAll");
+        int result = sqlSession.insert("userNamespace.addStudent",studentEntity);
+        sqlSession.commit();
+        sqlSession.close();
+        return result==1;
+    }
+    public boolean addTeacher(TeacherEntity teacherEntity) throws Exception
+    {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        int result = sqlSession.insert("userNamespace.addTeacher",teacherEntity);
+        sqlSession.commit();
+        sqlSession.close();
+        return result==1;
+    }
+
+
+    public List<UserEntity> getAllUserByClassId(String class_id) throws Exception{
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        return sqlSession.selectList("userNamespace.getAll",class_id);
     }
 
     //接口6 检查微信信息是否已绑定学号、工号等信息
@@ -39,7 +57,7 @@ public class UserDao {
     //接口7 绑定学号、工号、姓名等信息
     public boolean registerwxinfo(UserEntity userEntity){
         SqlSession sqlSession = sqlSessionFactory.openSession();
-        int result = sqlSession.insert("userNamespace.addUser",userEntity);
+        int result = sqlSession.insert("userNamespace.addStudent",userEntity);
         sqlSession.commit();
         sqlSession.close();
         return result==1;

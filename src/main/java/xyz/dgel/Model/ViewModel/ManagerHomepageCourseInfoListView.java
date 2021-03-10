@@ -2,6 +2,10 @@ package xyz.dgel.Model.ViewModel;
 
 public class ManagerHomepageCourseInfoListView {
 
+
+
+    public Integer cotocl_num;
+
     public String course_id;
 
     public String course_name;
@@ -70,5 +74,13 @@ public class ManagerHomepageCourseInfoListView {
 
     public void setTudent_count(Integer student_count) {
         this.student_count = student_count;
+    }
+
+    public Integer getCotocl_num() {
+        return cotocl_num;
+    }
+
+    public void setCotocl_num(Integer cotocl_num) {
+        this.cotocl_num = cotocl_num;
     }
 }

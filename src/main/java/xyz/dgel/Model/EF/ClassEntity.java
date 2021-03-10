@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "Class", schema = "WikiDatebase")
-public class ClazzEntity {
+public class ClassEntity {
     private String classId;
     private String className;
     private Integer departmentId;
@@ -55,7 +55,7 @@ public class ClazzEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        ClazzEntity that = (ClazzEntity) o;
+        ClassEntity that = (ClassEntity) o;
 
         if (classId != null ? !classId.equals(that.classId) : that.classId != null) return false;
         if (className != null ? !className.equals(that.className) : that.className != null) return false;

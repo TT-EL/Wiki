@@ -15,8 +15,11 @@
         <result property="power" column="power"/>
         <result property="regTime" column="reg_time"/>
     </resultMap>
-    <select id="getAllUser" resultMap="userMap">
-        select * from User;
+    <select id="getAllUser" parameterType="String" resultMap="userMap">
+        SELECT user_id,wx_id,wx_username,wx_image,wx_status,`name`,power,reg_time
+        FROM `User` u
+                 INNER JOIN Student s ON u.user_id = s.student_id
+        WHERE s.class_id = #{class_id}
     </select>
 
     <!-- 增加用户信息 -->
@@ -31,11 +34,16 @@
         values(#{studentId},#{classId},#{enrolTime})
     </insert>
 
+    <insert id="addTeacher" parameterType="xyz.dgel.Model.EF.TeacherEntity">
+        insert into Teacher(teacher_id, department_id, department_name)
+        values(#{teacherId},#{departmentId},#{departmentName})
+    </insert>
+
 
     <resultMap id="getRegisterWxInfo" type="String">
         <result property="user_id" column="user_id"/>
     </resultMap>
-    <select id="getRegisterWxInfo" parameterType="String">
+    <select id="getRegisterWxInfo" parameterType="String" resultMap="getRegisterWxInfo">
         select user_id from User where wx_id = #{0}
     </select>
 
