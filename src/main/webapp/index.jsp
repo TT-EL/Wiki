@@ -1,72 +1,116 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8" %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html>
 <head>
+    <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>首页</title>
     <meta name="renderer" content="webkit">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<%--    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">--%>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link rel="stylesheet" href="css/layui.css"  media="all">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/layui/css/layui.css" charset="UTF-8"  media="all">
     <style>
-        .all{
-            width:15%;
-            margin:0 auto;
-            margin-top:100px;
-            text-align:center;}
+        .bg{
+            width:70%;
+            margin:0 auto;}
     </style>
-    <title>添加页面</title>
-
+    <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
 </head>
 <body>
 
 <ul class="layui-nav" lay-filter="">
-    <li class="layui-nav-item"><a>首页</a></li>
-    <li class="layui-nav-item "><a>我的</a></li>
-    <li class="layui-nav-item layui-this"><a href="#">添加课程</a></li>
-    <li class="layui-nav-item"><a href="">联系我们</a></li>
+    <li class="layui-nav-item layui-this"><a href="#">首页</a></li>
+    <li class="layui-nav-item"><a href="add_course.jsp">添加课程</a></li>
+    <li class="layui-nav-item"><a href="add_class.jsp">添加班级</a></li>
+    <li class="layui-nav-item"><a href="add_cotocl.jsp">添加排课</a></li>
 </ul>
 
 <br><br><br><br>
-<div class="all">
 
-    <h3>添加课程</h3>
-    <br />
-    <form action="/Manager/addCourseInfo" method="post" >
-        <div class="layui-form-item">
-            <label class="layui-form-label">课程名：</label>
-            <div class="layui-input-block">
-                <input type="text" name="username" lay-verify="title" autocomplete="off" placeholder="请输入学院名" class="layui-input">
-            </div>
+<div class="bg">
+    <div class="demoTable">
+        搜索课程：
+        <div class="layui-inline">
+            <input class="layui-input" name="id" id="demoReload" autocomplete="off">
         </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">教师名称：</label>
-            <div class="layui-input-block">
-                <input type="password" name="password" placeholder="请输入该课程老师名" autocomplete="off" class="layui-input">
-            </div>
-        </div>
+        <button class="layui-btn" data-type="reload">搜索</button>
+        <button class="layui-btn"><a href="add_course.jsp" style="color:#FFF">添加课程</a></button>
+    </div>
 
-        <div class="layui-form-item">
-            <label class="layui-form-label">班级名称：</label>
-            <div class="layui-input-block">
-                <input type="text" name="username" lay-verify="title" autocomplete="off" placeholder="请输入课程名" class="layui-input">
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">选择框</label>
-            <div class="layui-input-block">
-                <select name="city" lay-verify="required">
-                    <option value=""></option>
-                    <option value="0">北京</option>
-                    <option value="1">上海</option>
-                    <option value="2">广州</option>
-                    <option value="3">深圳</option>
-                    <option value="4">杭州</option>
-                </select>
-            </div>
-        </div>
-        <button type="button" class="layui-btn layui-btn-lg layui-btn-normal">保存</button>
-    </form>
-
+    <table class="layui-hide" id="LAY_table_user" lay-filter="user"></table>
 </div>
+
+
+
+<script src="${pageContext.request.contextPath}layui/layui.js" charset="utf-8"></script>
+<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+
+<script>
+    //注意：导航 依赖 element 模块，否则无法进行功能性操作
+    layui.use('element', function(){
+        var element = layui.element;
+
+        //…
+    });
+</script>
+
+<script>
+    layui.use('table', function(){
+        var table = layui.table;
+
+        //方法级渲染
+        table.render({
+            elem: '#LAY_table_user'
+            //,url: 'https://www.fastmock.site/mock/2208ae2a5753db0f5bb87550d4a9128f/wiki/api/getmanagelist'
+            ,url: 'http://dgel.natapp1.cc/Manager/getHomePage'
+            ,parseData:function(res){//res即为原始返回的数据
+                return {
+                      "code" : 0, //解析接口状态
+                     "msg" : "ok", //解析提示文本
+                     "count":1000,//解析数据长度
+                    "data" : res.list //解析数据列表
+                };
+            }
+            ,cols: [[
+                {checkbox: true, fixed: true}
+                ,{field: 'cotocl_num', title: '排课编号', width:110, sort: true, fixed: 'left',minWidth:110}
+                ,{field: 'course_id', title: '课程编号', width:180, minWidth:180,sort: true}
+                ,{field: 'course_name', title: '课程名', width:130,minWidth:130, sort: true}
+                ,{field: 'year', title: '年级', width:80, minWidth:80,sort: true}
+                ,{field: 'teacher_name', title: '老师名', width: 100, sort: true,minWidth:100}
+                ,{field: 'class_name', title: '班级名', width: 130, sort: true,minWidth:130}
+                ,{field: 'course_desc', title: '课程描述', width: 120,minWidth:120}
+                ,{field: 'student_count', title: '学生人数', width:100, sort: true,minWidth:100}
+            ]]
+            ,id: 'testReload'
+            ,page: true
+            ,height: 450
+        });
+
+        var $ = layui.$, active = {
+            reload: function(){
+                var demoReload = $('#demoReload');
+
+                //执行重载
+                table.reload('testReload', {
+                    page: {
+                        curr: 1 //重新从第 1 页开始
+                    }
+                    ,where: {
+                        key: {
+                            id: demoReload.val()
+                        }
+                    }
+                }, 'data');
+            }
+        };
+
+        $('.demoTable .layui-btn').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+    });
+</script>
+
 </body>
 </html>

@@ -9,41 +9,13 @@ import xyz.dgel.Model.EF.StudentEntity;
 import xyz.dgel.Model.EF.TeacherEntity;
 import xyz.dgel.Model.EF.TieEntity;
 import xyz.dgel.Model.EF.UserEntity;
+import xyz.dgel.Model.ViewModel.UserGetCourseListView;
 
 import java.util.List;
 
 @Service
-public class UserService {
+public class UserService extends BaseService{
 
-    @Autowired
-    public UserDao userDao;
-
-
-
-    public boolean addStudent(StudentEntity studentEntity) throws Exception{
-        try{
-            String studentId = studentEntity.getUserId();
-            studentEntity.setStudentId(studentId);
-            studentEntity.setWxStatus((byte)1);
-            System.out.println(JSON.toJSONString(studentEntity));
-            userDao.addUser(studentEntity);
-            userDao.addStudent(studentEntity);
-        }catch (Exception e){
-            return false;
-        }
-        return true;
-    }
-
-    public boolean addTeacher(TeacherEntity teacherEntity) throws Exception{
-        try{
-            teacherEntity.setPower((byte)1);
-            userDao.addTeacher(teacherEntity);
-            userDao.addUser(teacherEntity);
-        }catch (Exception e){
-            return false;
-        }
-        return true;
-    }
 
     public List<UserEntity> getAllUserByClassId() throws Exception{
         return userDao.getAllUserByClassId(null);
@@ -60,7 +32,7 @@ public class UserService {
     }
 
     //接口8 获取课程列表
-    public List getcourselist(String student_id) throws Exception{
+    public List<UserGetCourseListView> getcourselist(String student_id) throws Exception{
         return userDao.getcourselist(student_id);
     }
 
@@ -74,9 +46,9 @@ public class UserService {
         return userDao.creattie(tieEntity);
     }
 
-    //接口11 获取帖子列表
-    public List getremarklist() throws Exception{
-        return userDao.getremarklist(null);
+    //接口11 获取回复列表
+    public List getremarklist(String t_id) throws Exception{
+        return userDao.getremarklist(t_id);
     }
 
     //接口12 发出评论

@@ -12,35 +12,8 @@ import xyz.dgel.Model.ViewModel.UserRemarkListView;
 import java.util.List;
 
 @Repository
-public class UserDao {
+public class UserDao extends BaseDao{
 
-    @Autowired
-    private SqlSessionFactory sqlSessionFactory;
-
-    public boolean addUser(UserEntity userEntity) throws Exception
-    {
-        SqlSession sqlSession = sqlSessionFactory.openSession();
-        int result = sqlSession.insert("userNamespace.addUser",userEntity);
-        sqlSession.commit();
-        sqlSession.close();
-        return result==1;
-    }
-    public boolean addStudent(StudentEntity studentEntity) throws Exception
-    {
-        SqlSession sqlSession = sqlSessionFactory.openSession();
-        int result = sqlSession.insert("userNamespace.addStudent",studentEntity);
-        sqlSession.commit();
-        sqlSession.close();
-        return result==1;
-    }
-    public boolean addTeacher(TeacherEntity teacherEntity) throws Exception
-    {
-        SqlSession sqlSession = sqlSessionFactory.openSession();
-        int result = sqlSession.insert("userNamespace.addTeacher",teacherEntity);
-        sqlSession.commit();
-        sqlSession.close();
-        return result==1;
-    }
 
 
     public List<UserEntity> getAllUserByClassId(String class_id) throws Exception{

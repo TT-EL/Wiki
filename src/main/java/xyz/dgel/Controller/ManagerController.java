@@ -1,6 +1,7 @@
 package xyz.dgel.Controller;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,24 +21,21 @@ import java.util.List;
 
 @Controller
 @RequestMapping(value = "/Manager",method = {RequestMethod.GET,RequestMethod.POST})
-public class ManagerController {
+public class ManagerController extends BaseController{
 
-    @Autowired
-    public MaganerService managerService;
-
-    public void BasicJsonResponse(HttpServletResponse resp,String json) throws IOException {
-        PrintWriter writer = resp.getWriter();
-        resp.setCharacterEncoding("utf-8");
-        resp.setContentType("application/json; charset=utf-8");
-        writer.write(json);
-    }
 
 
     @RequestMapping(value = "/getHomePage",method = {RequestMethod.GET})
     @ResponseBody
     public void getHomePageList(HttpServletResponse response) throws Exception{
         List<ManagerHomepageCourseInfoListView> listViews = managerService.getManagerList();
-        BasicJsonResponse(response,JSON.toJSONString(listViews));
+        //String listData = JSON.toJSONString(listViews);
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("code",0);
+        jsonObject.put("msg","");
+        jsonObject.put("count",1000);
+        jsonObject.put("list",listViews);
+        BasicJsonResponse(response,jsonObject.toJSONString());
     }
 
     @RequestMapping(value = "/getStudentList",method = RequestMethod.GET)

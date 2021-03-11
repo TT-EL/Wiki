@@ -2,17 +2,18 @@ package xyz.dgel.Controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-import xyz.dgel.BLL.UserService;
 import xyz.dgel.Common.HttpGetUtil;
 import xyz.dgel.Model.EF.StudentEntity;
-import xyz.dgel.Model.EF.UserEntity;
+import xyz.dgel.Model.ViewModel.UserGetCourseListView;
+import xyz.dgel.Model.ViewModel.UserGetTieListView;
+import xyz.dgel.Model.ViewModel.UserRemarkListView;
 import xyz.dgel.Model.WxTestWebInfo;
 import xyz.dgel.Model.WxUserInfo;
 
@@ -20,20 +21,27 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.URLEncoder;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
 @RequestMapping(value = "/User",method = {RequestMethod.GET,RequestMethod.POST})
-public class UserController {
+public class UserController extends BaseController{
 
-    @Autowired
-    public UserService userService;
 
     private String code = null;
     private String openid = null;
     private String access_token = null;
+
+    public void BasicJsonResponse(HttpServletResponse resp,String json) throws IOException {
+        PrintWriter writer = resp.getWriter();
+        resp.setCharacterEncoding("utf-8");
+        resp.setContentType("application/json; charset=utf-8");
+        writer.write(json);
+    }
 
     //获取Code
     @RequestMapping(value = "/entry")
@@ -145,16 +153,33 @@ public class UserController {
         return "message";
     }
 
-    @RequestMapping(value = "/getCourseList")
-    public ModelAndView getCourseList() throws Exception{
+    //region 获取列表类控制器
 
-        return null;
+    @RequestMapping(value = "/getCourseList",method = RequestMethod.GET)
+    public void getCourseList(HttpServletResponse response,@Param(value = "student_id")String student_id) throws Exception{
+        List<UserGetCourseListView> list = userService.getcourselist(student_id);
+        BasicJsonResponse(response,JSON.toJSONString(list));
     }
+
+    @RequestMapping(value = "getTieList",method = RequestMethod.GET)
+    public void getTieList(HttpServletResponse response,@Param(value = "cotocl_num")Integer cotocl_num) throws Exception{
+        List<UserGetTieListView> list = userService.gettielist(cotocl_num);
+        BasicJsonResponse(response,JSON.toJSONString(list));
+    }
+
+    @RequestMapping(value = "getRemarkList",method = RequestMethod.GET)
+    public void getRemarkList(HttpServletResponse response,@Param(value = "t_id")String t_id) throws Exception{
+        List<UserRemarkListView> list = userService.getremarklist(t_id);
+        BasicJsonResponse(response,JSON.toJSONString(list));
+    }
+
+    //endregion
+
+
 
 
     @RequestMapping("/getalluser")
     public void getAllUser() throws Exception{
-
 
         String s = userService.getAllUserByClassId().toString();
         System.out.println(s);
