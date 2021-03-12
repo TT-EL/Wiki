@@ -1,57 +1,62 @@
 package xyz.dgel.BLL;
 
+import com.alibaba.fastjson.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import xyz.dgel.DAL.UserDao;
+import xyz.dgel.Model.EF.StudentEntity;
+import xyz.dgel.Model.EF.TeacherEntity;
+import xyz.dgel.Model.EF.TieEntity;
 import xyz.dgel.Model.EF.UserEntity;
+import xyz.dgel.Model.ViewModel.UserGetCourseListView;
+import xyz.dgel.Model.ViewModel.UserGetTieListView;
 
 import java.util.List;
 
 @Service
-public class UserService {
-
-    @Autowired
-    public UserDao userDao;
+public class UserService extends BaseService{
 
 
-    @Transactional
-    public int addUser(UserEntity userEntity) throws Exception{
-        return userDao.addUser(userEntity);
+    public List<UserEntity> getAllUserByClassId() throws Exception{
+        return userDao.getAllUserByClassId(null);
     }
 
-    public List<UserEntity> getAlluser() throws Exception{
-        return userDao.getAllUser();
+    public UserEntity getOneUserByWXId(String wx_id) throws Exception{
+        return userDao.getuserinfobywxid(wx_id);
     }
 
     //接口6 检查微信信息是否已绑定学号、工号等信息
-    public boolean getregisterwxinfo() throws Exception{
-        return userDao.getRegisterWxInfo(null);
+    public boolean getregisterwxinfo(String wx_id) throws Exception{
+        return userDao.getRegisterWxInfo(wx_id);
     }
 
     //接口7 绑定学号、工号、姓名等信息
-    public boolean registerwxinfo() throws Exception{
-        return userDao.registerwxinfo(null);
+    public boolean registerwxinfo(UserEntity userEntity) throws Exception{
+        return userDao.registerwxinfo(userEntity);
     }
 
     //接口8 获取课程列表
-    public List getcourselist() throws Exception{
-        return userDao.getcourselist(null);
+    public List<UserGetCourseListView> getcourselist(String student_id) throws Exception{
+        return userDao.getcourselist(student_id);
     }
 
     //接口9 获取帖子列表
-    public List gettielist() throws Exception{
-        return userDao.gettielist(null);
+    public List gettielist(Integer cotocl_num) throws Exception{
+        return userDao.gettielist(cotocl_num);
+    }
+    public UserGetTieListView gettie(String t_id) throws Exception{
+        return userDao.gettie(t_id);
     }
 
     //接口10 用户发帖提问
-    public boolean creattie() throws Exception{
-        return userDao.creattie(null);
+    public boolean creattie(TieEntity tieEntity) throws Exception{
+        return userDao.creattie(tieEntity);
     }
 
-    //接口11 获取帖子列表
-    public List getremarklist() throws Exception{
-        return userDao.getremarklist(null);
+    //接口11 获取回复列表
+    public List getremarklist(String t_id) throws Exception{
+        return userDao.getremarklist(t_id);
     }
 
     //接口12 发出评论

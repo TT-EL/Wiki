@@ -18,6 +18,20 @@
             <param-value>classpath:spring/applicationContext.xml</param-value>
         </init-param>
     </servlet>
+
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>*.css</url-pattern>
+        <url-pattern>*.js</url-pattern>
+        <url-pattern>*.ttf</url-pattern>
+        <url-pattern>*.png</url-pattern>
+        <url-pattern>*.jpeg</url-pattern>
+        <url-pattern>*.jpg</url-pattern>
+        <url-pattern>*.gif</url-pattern>
+        <url-pattern>*.svg</url-pattern>
+        <url-pattern>*.woff</url-pattern>
+    </servlet-mapping>
+
     <servlet-mapping>
         <servlet-name>ClientDispatcherServlet</servlet-name>
         <url-pattern>/</url-pattern>

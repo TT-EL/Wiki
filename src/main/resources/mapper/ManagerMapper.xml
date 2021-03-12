@@ -7,7 +7,8 @@
     <!--映射表resultMap property为Entity里的属性名 column为表中的列名 @Column(name = "wx_username")-->
     <!--  获取首页内容，无参数  -->
     <resultMap type="xyz.dgel.Model.ViewModel.ManagerHomepageCourseInfoListView" id="managerMap">
-        <id property="course_id" column="co.course_id"/>
+        <id property="cotocl_num" column="cotocl_num"/>
+        <result property="course_id" column="course_id"/>
         <result property="course_name" column="course_name"/>
         <result property="year" column="course_year"/>
         <result property="teacher_name" column="name"/>
@@ -16,7 +17,7 @@
         <result property="student_count" column="student_count"/>
     </resultMap>
     <select id="getManagerList" resultMap="managerMap">
-        SELECT DISTINCT  co.course_id,course_name,course_year,name,class_name,course_desc,(SELECT COUNT(*) FROM Student WHERE Student.class_id = cl.class_id) as student_count
+        SELECT DISTINCT  ctc.cotocl_num,co.course_id,course_name,course_year,name,class_name,course_desc,(SELECT COUNT(*) FROM Student WHERE Student.class_id = cl.class_id) AS student_count
         FROM CotoCl ctc
         INNER JOIN Course co ON ctc.course_id = co.course_id
         INNER JOIN Class cl ON ctc.class_id = cl.class_id
@@ -24,17 +25,51 @@
         INNER JOIN CoTime ct ON ctc.cotocl_num = ct.cotocl_num
     </select>
 
-    <!--插入课程信息 使用实体类CotoClEntity-->
-    <insert id="addCourseInfo" parameterType="xyz.dgel.Model.EF.CotoClEntity">
+    <resultMap type="xyz.dgel.Model.EF.CotoClEntity" id="cotoclDetialMap">
+        <id property="cotocl_num" column="cotocl_num"/>
+        <result property="course_id" column="course_id"/>
+        <result property="teacher_id" column="teacher_id"/>
+        <result property="class_id" column="class_id"/>
+    </resultMap>
+    <select id="getCotoclAll" parameterType="String" resultMap="cotoclDetialMap">
+        SELECT * FROM CotoCl
+        WHERE cotocl_num = #{cotocl_num}
+    </select>
+
+    <!--插入排课信息 使用实体类CotoClEntity-->
+    <insert id="addCoursePlanInfo" useGeneratedKeys="true" keyProperty="cotoclNum" keyColumn="cotocl_num" parameterType="xyz.dgel.Model.ViewModel.ManagerAddCoursePlan">
         insert into CotoCl(cotocl_num,class_id,course_id,teacher_id) values(null,#{classId},#{courseId},#{teacherId})
     </insert>
+    <insert id="addCoursePlanTimeInfo" parameterType="xyz.dgel.Model.ViewModel.ManagerAddCoursePlan">
+        insert into CoTime(info_id,cotocl_num,course_year) values(null,#{cotoclNum},#{courseYear})
+    </insert>
+
+    <!--插入课程信息 使用实体类CourseEntity-->
+    <insert id="addCourseInfo" parameterType="xyz.dgel.Model.EF.CourseEntity">
+        insert into Course(course_id,course_name,course_desc,course_image)
+        values (#{courseId},#{courseName},#{courseDesc},#{courseImage})
+    </insert>
+
+    <!--插入课程信息 使用实体类CourseEntity-->
+    <insert id="addCClassInfo" parameterType="xyz.dgel.Model.EF.ClassEntity">
+        insert into Class(class_id,class_name,department_id,department_name)
+        values (#{classId},#{className},#{departmentId},#{departmentName})
+    </insert>
+
 
     <!--根据班级名称查询班级ID-->
     <resultMap id="getclassidbyname" type="java.lang.String">
         <result property="class_id" column="class_id"></result>
     </resultMap>
-    <select id="getClassId" resultMap="getclassidbyname" parameterType="java.lang.String">
+    <select id="getClassIdByClassName" resultMap="getclassidbyname" parameterType="java.lang.String">
         select class_id from Class where class_name = #{class_name}
+    </select>
+
+    <resultMap id="getclassidbyid" type="java.lang.String">
+        <result property="class_id" column="class_id"></result>
+    </resultMap>
+    <select id="getClassIdByClassId" resultMap="getclassidbyid" parameterType="java.lang.String">
+        select class_id from Class where class_id = #{class_id}
     </select>
 
 
@@ -43,15 +78,58 @@
         <result property="course_id" column="course_id"></result>
     </resultMap>
     <select id="getCourseId" resultMap="getcourseidbyname" parameterType="java.lang.String">
-        select course_id from Class where course_name = #{course_name}
+        select course_id from Course where course_name = #{course_name}
     </select>
 
-    <!--根据课程名称查询课程ID-->
+    <!--根据教师名称查询课程ID-->
     <resultMap id="getteacheridbyname" type="java.lang.String">
         <result property="teacher_id" column="teacher_id"></result>
     </resultMap>
     <select id="getTeacherId" resultMap="getteacheridbyname" parameterType="java.lang.String">
-        select teacher_id from Class where teacher_name = #{teacher_name}
+       select teacher_id from Teacher t
+        INNER JOIN `User` u ON u.user_id = t.teacher_id
+        where u.`name` = #{teacher_name}
     </select>
 
+
+    <!--获取班级、老师列表-->
+    <resultMap id="getTeacherList" type="xyz.dgel.Model.EF.TeacherEntity" >
+        <id property="teacherId" column="teacher_id"/>
+        <result property="name" column="name"/>
+        <result property="departmentName" column="department_name"/>
+    </resultMap>
+    <select id="getTeacherList" resultMap="getTeacherList">
+        SELECT teacher_id,name,department_name
+        FROM Teacher t
+        INNER JOIN `User` u ON u.user_id = t.teacher_id
+    </select>
+    <resultMap id="getClassList" type="xyz.dgel.Model.EF.ClassEntity">
+        <id property="classId" column="class_id"/>
+        <result property="className" column="class_name"/>
+        <result property="departmentId" column="department_id"/>
+        <result property="departmentName" column="department_name"/>
+    </resultMap>
+    <select id="getClassList" resultMap="getClassList">
+        select * from Class
+    </select>
+
+    <!--根据班级号获取学生列表-->
+    <resultMap id="getStudentList" type="xyz.dgel.Model.EF.StudentEntity">
+        <id property="userId" column="user_id"/>
+        <result property="wxId" column="wx_id"/>
+        <result property="wxUsername" column="wx_username"/>
+        <result property="wxImage" column="wx_image"/>
+        <result property="wxStatus" column="wx_status"/>
+        <result property="name" column="name"/>
+        <result property="power" column="power"/>
+        <result property="regTime" column="reg_time"/>
+        <result property="classId" column="class_id"/>
+        <result property="enrolTime" column="enrol_time"/>
+    </resultMap>
+    <select id="getStudentList" resultMap="getStudentList" parameterType="String">
+        SELECT *
+        FROM Student s
+        INNER JOIN `User` u ON u.user_id = s.student_id
+        WHERE s.class_id = #{class_id}
+    </select>
 </mapper>
