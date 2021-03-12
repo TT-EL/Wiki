@@ -1,24 +1,17 @@
 package xyz.dgel.Controller;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import xyz.dgel.BLL.MaganerService;
+import org.springframework.web.bind.annotation.*;
 import xyz.dgel.Model.EF.*;
+import xyz.dgel.Model.ViewModel.ManagerAddCoursePlan;
 import xyz.dgel.Model.ViewModel.ManagerHomepageCourseInfoListView;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
 
-
+@CrossOrigin(value = "*")
 @Controller
 @RequestMapping(value = "/Manager",method = {RequestMethod.GET,RequestMethod.POST})
 public class ManagerController extends BaseController{
@@ -47,14 +40,16 @@ public class ManagerController extends BaseController{
 
     //region 管理员增加排课信息
     @RequestMapping(value = "/addCoursePlanInfo",method = {RequestMethod.POST})
-    public void addCoursePlanInfo(HttpServletResponse response, CotoClEntity cotoClEntity) throws Exception{
+    public void addCoursePlanInfo(HttpServletResponse response, ManagerAddCoursePlan managerAddCoursePlan) throws Exception{
         JSONObject o = new JSONObject();
-        boolean result = managerService.addcourseplaninfo(cotoClEntity);
+
+        boolean result = managerService.addcourseplaninfo(managerAddCoursePlan);
+
         if (result){
-            o.put("error_code",1);
+            o.put("code",1);
         }
         else{
-            o.put("error_code",0);
+            o.put("code",0);
         }
         BasicJsonResponse(response,o.toJSONString());
 
@@ -96,29 +91,92 @@ public class ManagerController extends BaseController{
         BasicJsonResponse(response,o.toJSONString());
     }
 
-    @RequestMapping(value = "/searchClass",method = {RequestMethod.GET})
-    public void getClassInfo(HttpServletResponse response,@RequestParam("class_name") String class_name) throws Exception{
+    //根据班级名称获取班级信息
+    @RequestMapping(value = "/searchClassByClassName",method = {RequestMethod.GET})
+    public void getClassInfoByClassName(HttpServletResponse response,@RequestParam("class_name") String class_name) throws Exception{
         JSONObject o = new JSONObject();
 
-        String class_id = managerService.getclassid(class_name);
+        String class_id = managerService.getclassidbyclassname(class_name);
         if (class_id != null){
-            o.put("error_code",1);
+            o.put("code",1);
             o.put("class_id",class_id);
             o.put("class_name",class_name);
         }
         else{
-            o.put("error_code",0);
+            o.put("code",0);
+        }
+        BasicJsonResponse(response,o.toJSONString());
+    }
+
+    //根据班级ID搜索班级信息
+    @RequestMapping(value = "/searchClassByClassId",method = {RequestMethod.GET})
+    public void getClassInfoByClassId(HttpServletResponse response,@RequestParam("class_id") String class_id) throws Exception{
+        JSONObject o = new JSONObject();
+
+        String result = managerService.getclassidbyclassid(class_id);
+        if (result != null){
+            o.put("code",1);
+        }
+        else{
+            o.put("code",0);
+        }
+        BasicJsonResponse(response,o.toJSONString());
+    }
+
+    //根据课程名称搜索课程信息
+    @RequestMapping(value = "/searchCourseInfoByCourseName",method = {RequestMethod.GET})
+    public void searchCourseInfoByCourseName(HttpServletResponse response,@RequestParam("course_name") String course_name) throws Exception{
+        JSONObject o = new JSONObject();
+
+        String course_id = managerService.getcourseid(course_name);
+        if (course_id != null){
+            o.put("code",1);
+            o.put("course_id",course_id);
+
+        }
+        else{
+            o.put("code",0);
+        }
+        BasicJsonResponse(response,o.toJSONString());
+    }
+
+    //根据教师姓名搜索教师信息
+    @RequestMapping(value = "/searchTeacherInfoByTeacherName",method = {RequestMethod.GET})
+    public void searchTeacherInfoByTeacherName(HttpServletResponse response,@RequestParam("teacher_name") String teacher_name) throws Exception{
+        JSONObject o = new JSONObject();
+
+        String teacher_id = managerService.getteacherid(teacher_name);
+        if (teacher_id != null){
+            o.put("code",1);
+            o.put("teacher_id",teacher_id);
+        }
+        else{
+            o.put("code",0);
         }
         BasicJsonResponse(response,o.toJSONString());
     }
     //endregion
 
 
+    //增加课程信息
     @RequestMapping(value = "addCourseInfo",method = RequestMethod.POST)
     public void addCourseInfo(HttpServletResponse response, CourseEntity courseEntity) throws Exception{
         JSONObject o = new JSONObject();
         try{
             managerService.addcourseinfo(courseEntity);
+        }catch (Exception e){
+            o.put("error_code",0);
+        }
+        o.put("error_code",1);
+        BasicJsonResponse(response,o.toJSONString());
+    }
+
+    //增加班级信息
+    @RequestMapping(value = "addClassInfo",method = RequestMethod.POST)
+    public void addClassInfo(HttpServletResponse response, ClassEntity classEntity) throws Exception{
+        JSONObject o = new JSONObject();
+        try{
+            managerService.addclassinfo(classEntity);
         }catch (Exception e){
             o.put("error_code",0);
         }

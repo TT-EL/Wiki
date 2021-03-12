@@ -15,6 +15,10 @@ public class UserRemarkListView {
 
     private String remarkText;
 
+
+
+    private String remarkImage;
+
     private Timestamp remarkTime;
 
     public Integer remarkUpNum;
@@ -31,6 +35,15 @@ public class UserRemarkListView {
         this.iId = iId;
     }
 
+    @Basic
+    @Column(name = "remark_image")
+    public String getRemarkImage() {
+        return remarkImage;
+    }
+
+    public void setRemarkImage(String remarkImage) {
+        this.remarkImage = remarkImage;
+    }
     @Basic
     @Column(name = "name")
     public String getUserName() {

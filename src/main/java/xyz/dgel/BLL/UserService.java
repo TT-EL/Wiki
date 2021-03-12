@@ -10,6 +10,7 @@ import xyz.dgel.Model.EF.TeacherEntity;
 import xyz.dgel.Model.EF.TieEntity;
 import xyz.dgel.Model.EF.UserEntity;
 import xyz.dgel.Model.ViewModel.UserGetCourseListView;
+import xyz.dgel.Model.ViewModel.UserGetTieListView;
 
 import java.util.List;
 
@@ -19,6 +20,10 @@ public class UserService extends BaseService{
 
     public List<UserEntity> getAllUserByClassId() throws Exception{
         return userDao.getAllUserByClassId(null);
+    }
+
+    public UserEntity getOneUserByWXId(String wx_id) throws Exception{
+        return userDao.getuserinfobywxid(wx_id);
     }
 
     //接口6 检查微信信息是否已绑定学号、工号等信息
@@ -39,6 +44,9 @@ public class UserService extends BaseService{
     //接口9 获取帖子列表
     public List gettielist(Integer cotocl_num) throws Exception{
         return userDao.gettielist(cotocl_num);
+    }
+    public UserGetTieListView gettie(String t_id) throws Exception{
+        return userDao.gettie(t_id);
     }
 
     //接口10 用户发帖提问

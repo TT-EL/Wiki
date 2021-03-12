@@ -27,11 +27,11 @@ public class CoTimeEntity {
     @Basic
     @Column(name = "course_year")
     public String getCourseYear() {
-        return courseTerm;
+        return courseYear;
     }
 
-    public void setCourseYear(String courseTerm) {
-        this.courseTerm = courseTerm;
+    public void setCourseYear(String courseYear) {
+        this.courseYear = courseYear;
     }
 
     @Basic
@@ -84,32 +84,5 @@ public class CoTimeEntity {
         this.courseDate = courseDate;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
 
-        CoTimeEntity that = (CoTimeEntity) o;
-
-        if (infoId != that.infoId) return false;
-        if (cotoclNum != that.cotoclNum) return false;
-        if (courseTerm != null ? !courseTerm.equals(that.courseTerm) : that.courseTerm != null) return false;
-        if (courseWeek != null ? !courseWeek.equals(that.courseWeek) : that.courseWeek != null) return false;
-        if (courseWeekTime != null ? !courseWeekTime.equals(that.courseWeekTime) : that.courseWeekTime != null)
-            return false;
-        if (courseDate != null ? !courseDate.equals(that.courseDate) : that.courseDate != null) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = infoId;
-        result = 31 * result + (courseTerm != null ? courseTerm.hashCode() : 0);
-        result = 31 * result + cotoclNum;
-        result = 31 * result + (courseWeek != null ? courseWeek.hashCode() : 0);
-        result = 31 * result + (courseWeekTime != null ? courseWeekTime.hashCode() : 0);
-        result = 31 * result + (courseDate != null ? courseDate.hashCode() : 0);
-        return result;
-    }
 }

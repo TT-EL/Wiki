@@ -22,6 +22,12 @@
         WHERE s.class_id = #{class_id}
     </select>
 
+    <select id="getOneUser" parameterType="String" resultMap="userMap">
+        SELECT user_id,wx_id,wx_username,wx_image,wx_status,`name`,power,reg_time
+        FROM `User` u
+        WHERE u.wx_id = #{wx_id}
+    </select>
+
     <!-- 增加用户信息 -->
     <!--User是表名 跟着括号里的是数据库表中的列名  {}花括号里的是Entity中的属性名-->
     <insert id="addUser" parameterType="xyz.dgel.Model.EF.UserEntity">
@@ -44,7 +50,7 @@
         <result property="user_id" column="user_id"/>
     </resultMap>
     <select id="getRegisterWxInfo" parameterType="String" resultMap="getRegisterWxInfo">
-        select user_id from User where wx_id = #{0}
+        select user_id from User where wx_id = #{wx_id}
     </select>
 
 
@@ -82,6 +88,26 @@
         WHERE cotocl_num = #{cotocl_num}
     </select>
 
+
+
+    <resultMap id="getTie" type="xyz.dgel.Model.ViewModel.UserGetTieListView">
+        <id property="tId" column="t_id"/>
+        <result property="tUrlVideo" column="t_url_video"/>
+        <result property="tUrlImage" column="t_url_image"/>
+        <result property="tIntroduction" column="t_introduction"/>
+        <result property="tWatch" column="t_watch"/>
+        <result property="tEditTime" column="t_edit_time"/>
+        <result property="wxImage" column="wx_image"/>
+        <result property="name" column="name"/>
+    </resultMap>
+    <select id="getTie" parameterType="String" resultMap="getTie">
+        SELECT t_id,name,wx_image,t_introduction,t_url_image,t_url_video,t_watch,t_edit_time
+        FROM Tie t
+                 INNER JOIN `User` u ON t.user_id = u.user_id
+        WHERE t_id = #{t_id}
+    </select>
+
+
     <!--用户发帖提问-->
     <insert id="addTieInfo" parameterType="xyz.dgel.Model.EF.TieEntity">
         insert into Tie(t_id, cotocl_num, user_id, t_url_video, t_url_image, t_introduction, t_text,t_watch,t_edit_time)
@@ -96,10 +122,11 @@
         <result property="wxImage" column="wx_image"/>
         <result property="remarkText" column="remark_text"/>
         <result property="remarkTime" column="remark_time"/>
+        <result property="remarkImage" column="remark_image"/>
         <result property="remarkUpNum" column="remark_up_num"/>
     </resultMap>
     <select id="getRemarkList" parameterType="String" resultMap="getRemarkList">
-        SELECT i.i_id AS i_id,name,wx_image,remark_text,remark_time,remark_up_num
+        SELECT i.i_id AS i_id,name,wx_image,remark_text,remark_time,remark_image,remark_up_num
         FROM Interaction i
                  INNER JOIN InterRemark ir ON i.i_id = ir.i_id
                  INNER JOIN User u ON u.user_id = i.user_id

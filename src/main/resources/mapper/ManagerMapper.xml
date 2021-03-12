@@ -25,9 +25,23 @@
         INNER JOIN CoTime ct ON ctc.cotocl_num = ct.cotocl_num
     </select>
 
+    <resultMap type="xyz.dgel.Model.EF.CotoClEntity" id="cotoclDetialMap">
+        <id property="cotocl_num" column="cotocl_num"/>
+        <result property="course_id" column="course_id"/>
+        <result property="teacher_id" column="teacher_id"/>
+        <result property="class_id" column="class_id"/>
+    </resultMap>
+    <select id="getCotoclAll" parameterType="String" resultMap="cotoclDetialMap">
+        SELECT * FROM CotoCl
+        WHERE cotocl_num = #{cotocl_num}
+    </select>
+
     <!--插入排课信息 使用实体类CotoClEntity-->
-    <insert id="addCoursePlanInfo" parameterType="xyz.dgel.Model.EF.CotoClEntity">
+    <insert id="addCoursePlanInfo" useGeneratedKeys="true" keyProperty="cotoclNum" keyColumn="cotocl_num" parameterType="xyz.dgel.Model.ViewModel.ManagerAddCoursePlan">
         insert into CotoCl(cotocl_num,class_id,course_id,teacher_id) values(null,#{classId},#{courseId},#{teacherId})
+    </insert>
+    <insert id="addCoursePlanTimeInfo" parameterType="xyz.dgel.Model.ViewModel.ManagerAddCoursePlan">
+        insert into CoTime(info_id,cotocl_num,course_year) values(null,#{cotoclNum},#{courseYear})
     </insert>
 
     <!--插入课程信息 使用实体类CourseEntity-->
@@ -36,12 +50,26 @@
         values (#{courseId},#{courseName},#{courseDesc},#{courseImage})
     </insert>
 
+    <!--插入课程信息 使用实体类CourseEntity-->
+    <insert id="addCClassInfo" parameterType="xyz.dgel.Model.EF.ClassEntity">
+        insert into Class(class_id,class_name,department_id,department_name)
+        values (#{classId},#{className},#{departmentId},#{departmentName})
+    </insert>
+
+
     <!--根据班级名称查询班级ID-->
     <resultMap id="getclassidbyname" type="java.lang.String">
         <result property="class_id" column="class_id"></result>
     </resultMap>
-    <select id="getClassId" resultMap="getclassidbyname" parameterType="java.lang.String">
+    <select id="getClassIdByClassName" resultMap="getclassidbyname" parameterType="java.lang.String">
         select class_id from Class where class_name = #{class_name}
+    </select>
+
+    <resultMap id="getclassidbyid" type="java.lang.String">
+        <result property="class_id" column="class_id"></result>
+    </resultMap>
+    <select id="getClassIdByClassId" resultMap="getclassidbyid" parameterType="java.lang.String">
+        select class_id from Class where class_id = #{class_id}
     </select>
 
 
@@ -50,15 +78,17 @@
         <result property="course_id" column="course_id"></result>
     </resultMap>
     <select id="getCourseId" resultMap="getcourseidbyname" parameterType="java.lang.String">
-        select course_id from Class where course_name = #{course_name}
+        select course_id from Course where course_name = #{course_name}
     </select>
 
-    <!--根据课程名称查询课程ID-->
+    <!--根据教师名称查询课程ID-->
     <resultMap id="getteacheridbyname" type="java.lang.String">
         <result property="teacher_id" column="teacher_id"></result>
     </resultMap>
     <select id="getTeacherId" resultMap="getteacheridbyname" parameterType="java.lang.String">
-        select teacher_id from Class where teacher_name = #{teacher_name}
+       select teacher_id from Teacher t
+        INNER JOIN `User` u ON u.user_id = t.teacher_id
+        where u.`name` = #{teacher_name}
     </select>
 
 

@@ -44,9 +44,14 @@ public class BaseDao {
     }
 
     //接口3 根据班级名称获取班级ID
-    public String getClassId(String class_name){
+    public String getClassIdByClassName(String class_name){
         SqlSession sqlSession = sqlSessionFactory.openSession();
-        return sqlSession.selectOne("managerNamespace.getClassId",class_name);
+        return sqlSession.selectOne("managerNamespace.getClassIdByClassName",class_name);
+    }
+
+    public String getClassIdByClassId(String class_name){
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        return sqlSession.selectOne("managerNamespace.getClassIdByClassId",class_name);
     }
 
     //接口4 根据课程名称获取课程ID
@@ -66,4 +71,6 @@ public class BaseDao {
         SqlSession sqlSession = sqlSessionFactory.openSession();
         return sqlSession.selectList("managerNamespace.getClassList");
     }
+
+
 }

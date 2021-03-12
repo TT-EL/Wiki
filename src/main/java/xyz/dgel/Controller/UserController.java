@@ -4,13 +4,14 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import xyz.dgel.Common.HttpGetUtil;
 import xyz.dgel.Model.EF.StudentEntity;
+import xyz.dgel.Model.EF.UserEntity;
 import xyz.dgel.Model.ViewModel.UserGetCourseListView;
 import xyz.dgel.Model.ViewModel.UserGetTieListView;
 import xyz.dgel.Model.ViewModel.UserRemarkListView;
@@ -42,6 +43,10 @@ public class UserController extends BaseController{
         resp.setContentType("application/json; charset=utf-8");
         writer.write(json);
     }
+
+    //region 登录，注册，身份验证
+
+
 
     //获取Code
     @RequestMapping(value = "/entry")
@@ -85,6 +90,7 @@ public class UserController extends BaseController{
 
     @RequestMapping("/home")
     public ModelAndView homePage(HttpServletResponse resp, HttpServletRequest req) throws ServletException, IOException, Exception{
+        WxUserInfo userInfo = new WxUserInfo();
 
         resp.setContentType("text/html");
         req.setCharacterEncoding("UTF-8");
@@ -92,7 +98,7 @@ public class UserController extends BaseController{
 
         if(code == null||openid == null||access_token == null)
             return new ModelAndView("redirect:/User/entry");
-        WxUserInfo userInfo = new WxUserInfo();
+
 
         Map params = new HashMap();
         params.put("access_token",access_token);
@@ -115,7 +121,15 @@ public class UserController extends BaseController{
 
         //已注册，跳转到课程列表
         if(exist){
-            modelAndView.setViewName("userhomepage");
+            UserEntity userEntity = userService.getOneUserByWXId(userInfo.getOpenId());
+            if (userEntity.getPower() == (byte)0){
+                modelAndView.setViewName("userhomepage");
+                modelAndView.addObject("student_id",userEntity.getUserId());
+            }
+            else{
+
+                modelAndView.setViewName("questionregion");
+            }
             return modelAndView;
         }
 
@@ -130,28 +144,64 @@ public class UserController extends BaseController{
         return modelAndView;
     }
 
+
+    @RequestMapping("/getRegisView")
+    public ModelAndView getRegisView(){
+        ModelAndView m = new ModelAndView();
+        m.setViewName("register");
+        return m;
+    }
+
+    @Transactional
     @RequestMapping("/register")
-    public String userRegister(Model model,@ModelAttribute StudentEntity studentEntity) throws Exception{
+    public void userRegister(HttpServletResponse response,@ModelAttribute StudentEntity studentEntity) throws Exception{
         System.out.println("用户注册");
         System.out.println(JSON.toJSONString(studentEntity));
+        JSONObject jsonObject = new JSONObject();
 
         //写入数据库
         try{
             boolean result = userService.addStudent(studentEntity);
             if (result){
                 System.out.println("注册成功");
-                model.addAttribute("message","注册成功");
+                //model.addAttribute("message","注册成功");
+                jsonObject.put("code",1);
+                jsonObject.put("student_id",studentEntity.getStudentId());
+
+
             }
             else{
-                model.addAttribute("message","注册失败,数据库错误");
+                //model.addAttribute("message","注册失败,数据库错误");
+                jsonObject.put("code",0);
             }
         }catch (Exception e){
-            System.out.println(e.getMessage());
-            model.addAttribute("message","注册失败");
-        }
 
-        return "message";
+            //model.addAttribute("message","注册失败");
+            jsonObject.put("code",0);
+        }
+        BasicJsonResponse(response,jsonObject.toJSONString());
+        //return "message";
     }
+
+    //endregion
+
+    @RequestMapping(value = "/getTiePage",method =RequestMethod.GET)
+    public ModelAndView getTiePage(ModelAndView modelAndView,@Param(value = "cotocl_num")String cotocl_num){
+
+        modelAndView.addObject("cotocl_num",cotocl_num);
+        modelAndView.setViewName("questionregion");
+        return modelAndView;
+
+    }
+
+    @RequestMapping(value = "/getRemarkPage",method =RequestMethod.GET)
+    public ModelAndView getRemarkPage(ModelAndView modelAndView,@Param(value = "tie_id")String tie_id){
+
+        modelAndView.addObject("tie_id",tie_id);
+        modelAndView.setViewName("remarkpage");
+        return modelAndView;
+    }
+
 
     //region 获取列表类控制器
 
@@ -167,9 +217,15 @@ public class UserController extends BaseController{
         BasicJsonResponse(response,JSON.toJSONString(list));
     }
 
+    @RequestMapping(value = "getTie",method = RequestMethod.GET)
+    public void getTie(HttpServletResponse response,@Param(value = "tie_id")String tie_id) throws Exception{
+        UserGetTieListView userGetTieListView = userService.gettie(tie_id);
+        BasicJsonResponse(response,JSON.toJSONString(userGetTieListView));
+    }
+
     @RequestMapping(value = "getRemarkList",method = RequestMethod.GET)
-    public void getRemarkList(HttpServletResponse response,@Param(value = "t_id")String t_id) throws Exception{
-        List<UserRemarkListView> list = userService.getremarklist(t_id);
+    public void getRemarkList(HttpServletResponse response,@Param(value = "tie_id")String tie_id) throws Exception{
+        List<UserRemarkListView> list = userService.getremarklist(tie_id);
         BasicJsonResponse(response,JSON.toJSONString(list));
     }
 

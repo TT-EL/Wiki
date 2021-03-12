@@ -24,7 +24,7 @@ public class UserDao extends BaseDao{
     //接口6 检查微信信息是否已绑定学号、工号等信息
     public boolean getRegisterWxInfo(String wx_id){
         SqlSession sqlSession = sqlSessionFactory.openSession();
-        return sqlSession.selectOne("userNamespace.getRegisterWxInfo") != null;
+        return sqlSession.selectOne("userNamespace.getRegisterWxInfo",wx_id) != null;
     }
 
     //接口7 绑定学号、工号、姓名等信息
@@ -52,6 +52,11 @@ public class UserDao extends BaseDao{
         return result==1;
     }
 
+    public UserEntity getuserinfobywxid(String wx_id){
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        return sqlSession.selectOne("userNamespace.getOneUser",wx_id);
+    }
+
     //接口8 获取课程列表（通过student_id获取属于该学生的课程列表）
     public List<UserGetCourseListView> getcourselist(String student_id){
         SqlSession sqlSession = sqlSessionFactory.openSession();
@@ -62,6 +67,11 @@ public class UserDao extends BaseDao{
     public List<UserGetTieListView> gettielist(Integer cotocl_num){
         SqlSession sqlSession = sqlSessionFactory.openSession();
         return sqlSession.selectList("userNamespace.getTieList",cotocl_num);
+    }
+
+    public UserGetTieListView gettie(String t_id){
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        return sqlSession.selectOne("userNamespace.getTie",t_id);
     }
 
     //接口10 用户发帖提问--
